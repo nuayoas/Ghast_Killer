@@ -19,5 +19,5 @@ At the end, we expect the agent to be able to swing the sword and hit the fireba
 
 ## Scheduled Office Hour
 
-Jan 17, 3:15pm
+Jan 27, 3:15pm
 
