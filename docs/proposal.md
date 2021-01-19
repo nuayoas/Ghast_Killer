@@ -3,7 +3,7 @@ layout: default
 title: Proposal
 ---
 
-<img align="right" width=200px height=220px style="padding:10px" src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/d/d5/Ghast_JE2_BE2.gif/revision/latest?cb=20201108222940&format=original">
+<img align="right" width=200px height=220px style="padding:10px" src="https://github.com/nuayoas/Ghast_Killer/blob/main/Ghast_JE2_BE2.gif">
 
 ## Summary of the Project
 
