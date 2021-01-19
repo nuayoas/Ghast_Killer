@@ -3,6 +3,8 @@ layout: default
 title: Proposal
 ---
 
+<img align="right" width=200px height=220px style="padding:10px" src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/d/d5/Ghast_JE2_BE2.gif/revision/latest?cb=20201108222940&format=original">
+
 ## Summary of the Project
 
 The game will set up a ghast (maybe more than one later?) that is floating in the sky, and Steve will be located in a ditch. The ghast will constantly shoot explosive fireball to Steve once the game started. The fireball will create a small but temperory igniting zone when it explodes. Steve can servive no more than five explosions. The fireball, however, can be bounced back if Steve hits it right in front of his face with a sword. The player will control Steve to survive under the blast and kill the ghast by hitting the fireball back. Thus, the AI agent will need to learn how to hit the fireball in a perfect angle and timing. Meanwhile, the agent will also need to deceide an action among swinging the sword once, waiting the fireball to get closer, or dodging the fireball based on the information input at each frame.
@@ -20,4 +22,3 @@ At the end, we expect the agent to be able to swing the sword and hit the fireba
 ## Scheduled Office Hour
 
 Jan 27, 3:15pm
-
