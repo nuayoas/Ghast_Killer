@@ -17,3 +17,7 @@ Our baseline for this project is to make the character stay alive and kill the g
 
 At the end, we expect the agent to be able to swing the sword and hit the fireball at most of the time (it will be really good if around 65-75% of the balls are bounced back), and the agent should survive at least 10-15 attacks before died. Like I said, we'll moniter the success rate and the surviving time contantly to verify if the algorithm is working.
 
+## Scheduled Office Hour
+
+Jan 17, 3:15pm
+
