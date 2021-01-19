@@ -3,7 +3,7 @@ layout: default
 title: Proposal
 ---
 
-<img align="right" width=200px height=220px style="padding:10px" src="https://github.com/nuayoas/Ghast_Killer/blob/main/Ghast_JE2_BE2.gif">
+<img align="right" width=200px height=220px style="padding:10px" src="https://raw.githubusercontent.com/nuayoas/Ghast_Killer/main/Ghast_JE2_BE2.gif">
 
 ## Summary of the Project
 
