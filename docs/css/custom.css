@@ -6,8 +6,6 @@ html {
 }
 body {
   /* Margin bottom by footer height */
-  border: thin solid blue;
-  box-sizing: border-box;
   margin-bottom: 60px;
 }
 .footer {

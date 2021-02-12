@@ -21,7 +21,7 @@
 
     <link rel="stylesheet" href="{{ 'css/custom.css' | relative_url }}">
   </head>
-  <body style="background-color: lightblue;">
+  <body style="background-color: lightblue;border: thin solid black;box-sizing: border-box;">
 
     {% assign current = page.url | downcase | split: '/' %}
     {% assign statusClass = 'disabled' %}
@@ -69,11 +69,11 @@
       </div>
     </nav>
 
-    <div class="container">
+    <div class="container" style="background-color: white">
       <div class="page-header">
 
         <img align="left" src="https://raw.githubusercontent.com/nuayoas/Ghast_Killer/main/diamond sword.gif">
-        <h1 style="font-size: 48px; color: coral">
+        <h1 style="font-size: 48px; color: coral; margin-top:25px">
         {{ site.title }}
         </h1>
         <img align="center" style =" height: 15px; width: auto; margin-top:25px" src="https://raw.githubusercontent.com/nuayoas/Ghast_Killer/main/subtitle.png">
