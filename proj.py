@@ -1,5 +1,10 @@
 # Rllib docs: https://docs.ray.io/en/latest/rllib.html
 
+# need to solve in the future: 
+#   1.behavior after all ghasts are killed (respawn?)
+#   2.extra damage caused by buring
+#   3.left&right wall detection: so the agent won't keep moving into the wall
+
 try:
     from malmo import MalmoPython
 except:
@@ -26,14 +31,15 @@ class GhastKiller(gym.Env):
         self.size_y = 25
         self.size_x = 10
         self.size_z = 20
-        self.reward_density = .1
-        self.penalty_density = .02
-        self.obs_size = 5
-        self.obs_size_x = 5
-        self.obs_size_y = 5
-        self.obs_size_z = 5
+        # self.reward_density = .1
+        # self.penalty_density = .02
+        # self.obs_size = 5
+        # self.obs_size_x = 5
+        # self.obs_size_y = 5
+        # self.obs_size_z = 5
         self.max_episode_steps = 100 #100
-        self.log_frequency = 10 #10
+        self.log_frequency = 1 #10
+        self.num_ghasts = 1
 
         self.action_dict = {
             0: 'movewest 1',  # Move one block forward
@@ -48,7 +54,7 @@ class GhastKiller(gym.Env):
         # discrete
         # self.action_space = Discrete(len(self.action_dict))
 
-        self.observation_space = Box(0, 1, shape=(self.obs_size_x * self.obs_size_y * self.obs_size_z, ), dtype=np.float32)
+        self.observation_space = Box(-50, 50, shape=(self.num_ghasts * 1 * 3, ), dtype=np.float32)
 
         # Malmo Parameters
         self.agent_host = MalmoPython.AgentHost()
@@ -68,10 +74,16 @@ class GhastKiller(gym.Env):
         self.steps = []
         self.ghasts = collections.defaultdict(dict)
         self.fireballs = collections.defaultdict(dict)
-        self.agentPos = (0.5, 21, -9.5)
+
+        self.agentState = {"pos": (0.5, 21, -9.5), "life": 20, "prevLife": 20}
+        
+        self.step_dodge = 0
+        self.episode_dodge = set()
+        self.step_hitback = 0
+        self.episode_hitback = set()
+        self.step_kill = 0
 
     def reset(self):
-        print(self.steps)
         """
         Resets the environment for the next episode.
 
@@ -80,7 +92,9 @@ class GhastKiller(gym.Env):
         """
         # Reset Malmo
         world_state = self.init_malmo()
-        print("reset")
+        
+        time.sleep(.2)
+
 
         # Reset Variables
         self.returns.append(self.episode_return)
@@ -88,14 +102,20 @@ class GhastKiller(gym.Env):
         self.steps.append(current_step + self.episode_step)
         self.episode_return = 0
         self.episode_step = 0
-
+        self.episode_dodge.clear()
+        self.episode_hitback.clear()
+        self.agentState = {"pos": (0.5, 21, -9.5), "life": 20, "prevLife": 20}
+        self.ghasts.clear()
+        self.fireballs.clear()
+        # give agent fire resistence
+        self.agent_host.sendCommand("chat /effect CS175GhastKiller fire_resistance 99999")
         # Log
         if len(self.returns) > self.log_frequency + 1 and \
             len(self.returns) % self.log_frequency == 0:
             self.log_returns()
 
         # Get Observation
-        self.obs, self.allow_break_action = self.get_observation(world_state)
+        self.obs = self.get_observation(world_state)
 
         return self.obs
 
@@ -136,28 +156,38 @@ class GhastKiller(gym.Env):
         self.episode_step += 1
         # print(self.episode_step)
 
+        # reset step dodge & hitback & kill
+        self.step_dodge = 0
+        self.step_hitback = 0
+        self.step_kill = 0
+
+
         # Get Observation
         world_state = self.agent_host.getWorldState()
         for error in world_state.errors:
             print("Error:", error.text)
-        self.obs, self.allow_break_action = self.get_observation(world_state) 
+        self.obs = self.get_observation(world_state) 
 
         # Get Done
         done = not world_state.is_mission_running 
-
         # Get Reward
-        reward = 0
-        for r in world_state.rewards:
-            reward += r.getValue()
+        reward = self.getReward(world_state)
+        
+
         self.episode_return += reward
+        # respawn one ghast
+        if self.step_kill == 1 and not len(self.ghasts):
+            time.sleep(.7)
+            print("respawn ghast")
+            self.agent_host.sendCommand("chat /summon Ghast 0.5 21 15")
 
         return self.obs, reward, done, dict()
 
     def get_mission_xml(self):
         entity = ''
-        entity += '<DrawEntity x="0.5" y="21" z="15" type="Ghast" yaw="180"/>'
-        # entity += '<DrawEntity x="4.5" y="21" z="15" type="Ghast" yaw="180"/>'
-        # entity += '<DrawEntity x="-4.5" y="21" z="15" type="Ghast" yaw="180"/>'
+        num = self.num_ghasts // 2
+        for i in range(-num, num+1):
+            entity += f'<DrawEntity x="{i*4}.5" y="21" z="15" type="Ghast" yaw="180"/>'
         
         return '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
                 <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -182,14 +212,17 @@ class GhastKiller(gym.Env):
                                 f"<DrawCuboid x1='{-self.size_x}' x2='{self.size_x}' y1='{2}' y2='{2}' z1='{-self.size_z}' z2='{self.size_z}' type='air'/>"+ \
                                 f"<DrawCuboid x1='{-self.size_x}' x2='{self.size_x}' y1='{1}' y2='{1}' z1='{-self.size_z}' z2='{self.size_z}' type='glowstone'/>"+ \
                                 f"<DrawCuboid x1='{-self.size_x}' x2='{self.size_x}' y1='{self.size_y}' y2='{self.size_y}' z1='{-self.size_z}' z2='{self.size_z}' type='sea_lantern'/>" + \
+                                f"<DrawCuboid x1='{-self.size_x}' x2='{self.size_x}' y1='{self.size_y+1}' y2='{self.size_y+1}' z1='{-self.size_z}' z2='{self.size_z}' type='bedrock'/>" + \
                                 f"<DrawCuboid x1='{-self.size_x}' x2='{-self.size_x}' y1='{2}' y2='{self.size_y}' z1='{-self.size_z}' z2='{self.size_z}' type='sea_lantern'/>"+ \
+                                f"<DrawCuboid x1='{-self.size_x-1}' x2='{-self.size_x-1}' y1='{2}' y2='{self.size_y}' z1='{-self.size_z}' z2='{self.size_z}' type='bedrock'/>"+ \
                                 f"<DrawCuboid x1='{self.size_x}' x2='{self.size_x}' y1='{2}' y2='{self.size_y}' z1='{-self.size_z}' z2='{self.size_z}' type='sea_lantern'/>" + \
+                                f"<DrawCuboid x1='{self.size_x+1}' x2='{self.size_x+1}' y1='{2}' y2='{self.size_y}' z1='{-self.size_z}' z2='{self.size_z}' type='sea_lantern'/>" + \
                                 f"<DrawCuboid x1='{-self.size_x}' x2='{self.size_x}' y1='{2}' y2='{self.size_y}' z1='{self.size_z}' z2='{self.size_z}' type='bedrock'/>"+ \
                                 f"<DrawCuboid x1='{-self.size_x}' x2='{self.size_x}' y1='{2}' y2='{self.size_y}' z1='{-self.size_z}' z2='{-self.size_z}' type='bedrock'/>" +\
-                                f"<DrawCuboid x1='{-self.size_x}' x2='{self.size_x}' y1='{20}' y2='{20}' z1='{-11}' z2='{-7}' type='bedrock'/>" +\
-                                f"<DrawCuboid x1='{-self.size_x}' x2='{-self.size_x}' y1='{21}' y2='{21}' z1='{-11}' z2='{-7}' type='bedrock'/>" +\
-                                f"<DrawCuboid x1='{self.size_x}' x2='{self.size_x}' y1='{21}' y2='{21}' z1='{-11}' z2='{-7}' type='bedrock'/>" +\
-                                f"<DrawCuboid x1='{-self.size_x+1}' x2='{self.size_x-1}' y1='{21}' y2='{21}' z1='{-11}' z2='{-7}' type='air'/>" +\
+                                f"<DrawCuboid x1='{-self.size_x}' x2='{self.size_x}' y1='{20}' y2='{20}' z1='{-13}' z2='{-7}' type='bedrock'/>" +\
+                                f"<DrawCuboid x1='{-self.size_x}' x2='{-self.size_x}' y1='{21}' y2='{21}' z1='{-13}' z2='{-7}' type='bedrock'/>" +\
+                                f"<DrawCuboid x1='{self.size_x}' x2='{self.size_x}' y1='{21}' y2='{21}' z1='{-13}' z2='{-7}' type='bedrock'/>" +\
+                                f"<DrawCuboid x1='{-self.size_x+1}' x2='{self.size_x-1}' y1='{21}' y2='{21}' z1='{-13}' z2='{-7}' type='air'/>" +\
                                 f"<DrawCuboid x1='{-self.size_x}' x2='{self.size_x}' y1='{20}' y2='{20}' z1='{self.size_z-7}' z2='{self.size_z}' type='bedrock'/>" +\
                                 f"<DrawCuboid x1='{-self.size_x}' x2='{self.size_x}' y1='{21}' y2='{21}' z1='{self.size_z-7}' z2='{self.size_z-7}' type='bedrock'/>" +\
                                 entity +\
@@ -200,6 +233,7 @@ class GhastKiller(gym.Env):
                                
                             </DrawingDecorator>
                             <ServerQuitWhenAnyAgentFinishes/>
+
                         </ServerHandlers>
                     </ServerSection>
 
@@ -216,16 +250,11 @@ class GhastKiller(gym.Env):
                             <ObservationFromFullStats/>
                             <ObservationFromRay/>
 
-                            <ObservationFromGrid>
-                                <Grid name="blocks">
-                                    <min x="-'''+str(int(self.obs_size_x/2))+'''" y="-1" z="0"/>
-                                    <max x="'''+str(int(self.obs_size_x/2))+'''" y="0" z="'''+str(int(self.obs_size_z))+'''"/>
-                                </Grid>
-                            </ObservationFromGrid>
+                           
 
 
                             <ObservationFromNearbyEntities>
-                                <Range name="eyesights" xrange="10" yrange="5" zrange="50" />
+                                <Range name="eyesights" xrange="15" yrange="25" zrange="50" />
                                 
                             </ObservationFromNearbyEntities>
                             
@@ -236,7 +265,8 @@ class GhastKiller(gym.Env):
                             </AgentQuitFromTouchingBlockType>
 
                             
-							
+                            <ChatCommands/>
+                           
 
                         </AgentHandlers>
                     </AgentSection>
@@ -288,8 +318,7 @@ class GhastKiller(gym.Env):
             allow_break_action: <bool> whether the agent is facing a diamond
         """
             
-        obs = np.zeros((self.obs_size_z*self.obs_size_y*self.obs_size_x, ))
-        allow_break_action = False
+        obs = np.zeros((self.num_ghasts * 1 * 3, ))
 
         while world_state.is_mission_running:
             time.sleep(0.1)
@@ -306,8 +335,16 @@ class GhastKiller(gym.Env):
                 # Update entities
                 self.updateEntities(eyesights)
                 
+                # get state
+                j = 0
+                for v in self.fireballs.values():
+                    if v["motion"][2] < 0:
+                        obs[j], obs[j+1], obs[j+2] = v["pos"]
+                        j += 3
+                    if j >= len(obs): break
                 break
-        return obs, allow_break_action
+
+        return obs
 
     def log_returns(self):
         """
@@ -341,15 +378,64 @@ class GhastKiller(gym.Env):
                 removedGhasts -= {eid}
                 self.ghasts[eid] = { "life" : entity["life"] }
 
-            elif name == "Fireball" and entity["z"] >= self.agentPos[2]:
+            elif name == "Fireball":
                 removedBalls -= {eid}
-                self.fireballs[eid] = {
-                                        "pos" : (entity["x"], entity["y"], entity["z"]),
-                                        "motion" : (entity["motionX"], entity["motionY"], entity["motionZ"])
-                                      }
+                if entity["z"] >= -11:
+                    if entity["motionZ"] < 0:
+                        self.fireballs[eid] = {
+                                                "pos" : (entity["x"], entity["y"], entity["z"]),
+                                                "motion" : (entity["motionX"], entity["motionY"], entity["motionZ"])
+                                              }
+                    else:
+                        if not eid in self.episode_hitback:
+                            self.step_hitback += 1
+                            self.episode_hitback.add(eid)
+                            print("hitback\t+1")
+                else:
+                    if not eid in self.episode_dodge:
+                        self.step_dodge += 1
+                        self.episode_dodge.add(eid)
+                        print("dodge\t+0.5")
+
+            elif name == "CS175GhastKiller":
+                self.agentState["pos"] = (entity["x"], entity["y"], entity["z"])
+                self.agentState["prevLife"] = self.agentState["life"]
+                self.agentState["life"] = entity["life"]
+
 
         for b in removedBalls: del self.fireballs[b] 
-        for g in removedGhasts: del self.ghasts[g]                          
+        for g in removedGhasts: 
+            del self.ghasts[g]      
+            self.step_kill += 1
+            print("kill\t+3")
+
+
+    def getReward(self, world_state):
+        # print(f"dodge count: {self.step_dodge}, hitback count: {self.step_hitback}, kill count: {self.step_kill}")
+        # get dodge/hitback/kill succeed reward
+        reward = self.step_dodge * 0.5 + self.step_hitback * 2 + self.step_kill * 3
+
+        # check if kill a ghast
+        # for r in world_state.rewards:
+        #     print(r)
+        #     if r.getValue() == 5:
+        #         print("Kill ghast\t+5")
+        #     reward += r.getValue()
+
+        # check if get hit
+        if self.agentState["life"] < self.agentState["prevLife"]:
+            print("Get hit\t-1")
+            reward -= 1
+
+
+        # removedBalls = set()
+        # for k, v in self.fireballs.items():
+        #     if v["motion"][2] > 0:
+        #         reward += 1
+        #         remo
+        #         print("hit back\t+1")
+
+        return reward        
 
 
 if __name__ == '__main__':
