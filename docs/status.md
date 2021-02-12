@@ -10,7 +10,7 @@ The game will set up a respawnable ghast floating in the sky around 20 blocks aw
 We're using the reinforcement learning with PPO algorithm from the Rllib. 
 
 $$ 
-\^{q}(s, a) = \^q(s, a) + \alpha[r + \gamma\max_a\^q(s', a')- \^q(s, a)] 
+$\hat q$(s, a) = \^q(s, a) + \alpha[r + \gamma\max_a\^q(s', a')- \^q(s, a)] 
 $$
 
 There are 100 steps at each episode, and there are three avaiable actions for the agent at each step:
