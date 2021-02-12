@@ -29,7 +29,7 @@ body > .container > .page-header{
   position: relative;
   height: 100px
 }
-body > .container > .page-header p{
+body > .container > .page-header h1{
   position: relative;
   display: inline;
 }
