@@ -3,12 +3,13 @@ layout: default
 title:  Home
 ---
 
-Source code: https://github.com/nuayoas/Ghast_Killer
 
-Reports:
+<font size="5">
 
 - [Proposal](proposal.html)
 - [Status](status.html)
 - [Final](final.html)
+</font>
 
+Source code: https://github.com/nuayoas/Ghast_Killer
 
