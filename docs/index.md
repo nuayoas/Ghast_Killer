@@ -2,8 +2,8 @@
 layout: default
 title:  Home
 ---
-<video width="480" height="320" controls>
-  <source src="https://raw.githubusercontent.com/nuayoas/Ghast_Killer/main/temp.mov" type="video/mp4">
+<video margin= auto width="960" height="640" controls>
+  <source src="https://raw.githubusercontent.com/nuayoas/Ghast_Killer/main/temp.MOV" type="video/mp4">
 </video>
 
 ### More Info:  [Proposal](proposal.html)
@@ -12,6 +12,6 @@ title:  Home
   
 ### Final Version: [Final](final.html)
 
-***Source code***: https://github.com/nuayoas/Ghast_Killer
+***Source code***: <a herf = "https://github.com/nuayoas/Ghast_Killer">https://github.com/nuayoas/Ghast_Killer </a>
 
 
