@@ -26,9 +26,11 @@ At each step, the agent gets a observation array indicating the postion of each 
 
 Last but not least, the system will spawn a new ghast after any of the original ghasts has been killed, so that if the agent performs really well and kills all the ghasts quickly, instead of quitting and starting a new episode early, it can still recieve more rewards in the same episode. 
 
-<img src="https://raw.githubusercontent.com/nuayoas/Ghast_Killer/blob/main/Capture.PNG"/>
+<div style="text-align:center"><img src="https://github.com/nuayoas/Ghast_Killer/blob/main/Capture.PNG"/></div>
 
 ## Evaluation
 Here is the learning result after around 10,000 steps
-<img src="https://raw.githubusercontent.com/nuayoas/Ghast_Killer/blob/main/returns_status.png" />
+
+<div style="text-align:center"><img src="https://github.com/nuayoas/Ghast_Killer/blob/main/returns_status.png"/></div>
+
 To evaulate the success of the project, we are looking at the success rate of dodging and bouncing back the fireballs, and the total number of kills. We cuurently reward the agent 0.5 point for one successful dodge, 1 point for hitting back the fireball, -1 point for getting hit, and 3 points for killing the ghast. The agent is expected to make random choices at first, and as the learning continues, the episode rewards should be improved overtime. As you can see in the graph above, the returns fluctuate quite a bit, and I believe this is partly because the total step (100) we set at each episode is not enough: we only spawn one ghast when testing, the shooting rate of a single ghast is 1 per 3 seconds, which means the total number of fireballs in each episode is relatively small, which limits the amount of valid training data. However, you can still see the upward trend of the curve in the graph. We believe, after making some necessary setting improvements and give it long enough time to do the training, the trend will be much more obvious.
