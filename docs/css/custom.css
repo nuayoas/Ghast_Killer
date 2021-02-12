@@ -25,6 +25,9 @@ body {
 body > .container {
   padding: 60px 15px 0;
 }
+body > .pictrues {
+  padding: 60px 200px 30px 200px;
+}
 .container .text-muted {
   margin: 20px 0;
 }
