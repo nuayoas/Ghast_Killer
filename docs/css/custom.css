@@ -26,8 +26,8 @@ body > .container {
   padding: 60px 15px 0;
 }
 .container > .page-header img{
-    width:100%;
-    height:auto;
+    width:auto;
+    height:100%;
 }
 .container .text-muted {
   margin: 20px 0;
