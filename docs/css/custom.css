@@ -35,7 +35,7 @@ body > .container > .page-header h1{
 }
 body > .container > .page-header img{
     width:auto;
-    height:90%;
+    height:100%;
 }
 .container .text-muted {
   margin: 20px 0;
