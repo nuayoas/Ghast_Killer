@@ -7,7 +7,13 @@ title: Status
 The game will set up a respawnable ghast floating in the sky around 20 blocks away from the agent. The ghast will constantly shoot explosive fireball to the agent in every 3 seconds. The fireball will create a small but temperory igniting zone when it explodes. The fireball, however, can be bounced back if the agent hits it right in front of his face with a sword. The goal of the project is to let agent learn how to survive under the fireball blast and find the best timing the hit back the fireball to kill the ghast.  The agent will need to deceide an action among swinging the sword once, waiting the fireball to get closer, or dodging the fireball based on the information input at each frame.
 
 ## Approach
-We're using the reinforcement learning with PPO algorithm from the Rllib. There are 100 steps at each episode, and there are three avaiable actions for the agent at each step:
+We're using the reinforcement learning with PPO algorithm from the Rllib. 
+
+$$ 
+\^q(s, a) = \^q(s, a) + \alpha[r + \gamma\max_a\^q(s', a')- \^q(s, a)] 
+$$
+
+There are 100 steps at each episode, and there are three avaiable actions for the agent at each step:
 * Strafe right
 * Strafe left
 * Swing the sword once (attack)
@@ -19,3 +25,5 @@ The rewarding system determins whether the agent has successfully dodged a fireb
 At each step, the agent gets a observation array indicating the postion of each fireball that is currenly flying towards it. So far, we simply construct the array by concatenating every fireball's x y z values, and we'll try to figure out a better way to turn the observation into an array.
 
 Last but not least, the system will spawn a new ghast after any of the original ghasts has been killed, so that if the agent performs really well and kills all the ghasts quickly, instead of quitting and starting a new episode early, it can still recieve more rewards in the same episode. 
+
+<img src="https://github.com/nuayoas/Ghast_Killer/blob/main/Capture.PNG"/>
