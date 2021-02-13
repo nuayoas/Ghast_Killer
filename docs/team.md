@@ -12,4 +12,6 @@ title:  Team
 ## Daolun Shen
 ***UCI Net ID***: daoluns
 
-### General Meeting Time: ### Monday 5:00pm - 5:30pm. We mainly communicate via chatting apps.
+### General Meeting Time:
+Monday 5:00pm - 5:30pm. 
+(We mainly communicate via chatting apps.)
