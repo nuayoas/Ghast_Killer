@@ -2,7 +2,7 @@
 layout: default
 title:  Home
 ---
-
+<div style="text-align:center"><img src="https://raw.githubusercontent.com/nuayoas/Ghast_Killer/main/index.jpg" width=600/></div>
 
 ### ***More Info:***  [Proposal](proposal.html)
   
