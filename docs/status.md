@@ -47,3 +47,4 @@ Lastly, we'll also need to figure out the different reward values that work the 
 * [Rllib doc](https://docs.ray.io/en/latest/rllib-algorithms.html)
 * [Malmo doc](https://microsoft.github.io/malmo/0.17.0/Documentation/index.html)
 * [XML schema doc](https://microsoft.github.io/malmo/0.17.0/Schemas/MissionHandlers.html)
+* [CS175 assignment2.py](https://canvas.eee.uci.edu/courses/30925/files/11335632)
