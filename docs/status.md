@@ -2,7 +2,7 @@
 layout: default
 title: Status
 ---
-<iframe width="560" height="315" src="https://youtu.be/VQU7jz6tAFI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VQU7jz6tAFI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Project Summary
 The game will set up a respawnable ghast floating in the sky around 20 blocks away from the agent. The ghast will constantly shoot explosive fireball to the agent in every 3 seconds. The fireball will create a small but temperory igniting zone when it explodes. The fireball, however, can be bounced back if the agent hits it right in front of his face with a sword. The goal of the project is to let agent learn how to survive under the fireball blast and find the best timing the hit back the fireball to kill the ghast.  The agent will need to deceide an action among swinging the sword once, waiting the fireball to get closer, or dodging the fireball based on the information input at each frame.
