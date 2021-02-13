@@ -2,9 +2,7 @@
 layout: default
 title:  Home
 ---
-<video margin= auto width="100%" height="640" controls>
-  <source src="https://raw.githubusercontent.com/nuayoas/Ghast_Killer/main/temp.mp4" type="video/mp4">
-</video>
+
 
 ### ***More Info:***  [Proposal](proposal.html)
   
