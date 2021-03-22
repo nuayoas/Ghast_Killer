@@ -49,3 +49,8 @@ body > .container > .page-header img{
 code {
   font-size: 80%;
 }
+
+p {
+  font-family: Georgia;
+  font-size: 18px;
+}
