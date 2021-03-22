@@ -5,7 +5,7 @@ title:  Home
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Xz9flIoOPNo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-[Our Final Model](https://github.com/nuayoas/Ghast_Killer/tree/main/RES/episdode_10s_norespwan)
+### [Our Final Model](https://github.com/nuayoas/Ghast_Killer/tree/main/RES/episdode_10s_norespwan)
 
 ## Project Summary
 
@@ -106,5 +106,6 @@ The return (reward) of each 300 steps. This one is like a summary of the above g
 * [XML schema doc](https://microsoft.github.io/malmo/0.17.0/Schemas/MissionHandlers.html)
 * [CS175 assignment2.py](https://canvas.eee.uci.edu/courses/30925/files/11335632)
 * https://openai.com/blog/openai-baselines-ppo/
+* https://bdtechtalks.com/2020/06/05/rule-based-ai-vs-machine-learning/
 
 
