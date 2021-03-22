@@ -35,20 +35,23 @@ As for the observation space, initially we simply returned the captured position
 
 As for the episode length, initially we set the length of each episode to be 100 steps and the ghast will be respawned as soon as the player killed it. We let it run for 10,000 steps and record the returns. 
 
-<div style="text-align:center"><img src="https://raw.githubusercontent.com/nuayoas/Ghast_Killer/main/returns_status.png" width=400/></div>
+![returns_status](https://user-images.githubusercontent.com/45502113/111943593-f2e6c380-8a92-11eb-8f32-7ec0239f6502.png)
+
 
 The return is the score (rewards for dodging and killing, and the punishment for getting hit), so the higher the score is, the better the performance is. 
 
 As you can see, after 10,000 steps, even though there is a visible upward trend, the improvement of the agent’s performance is still not obvious and the returns fluctuate quite a bit. Later we change each episode’s length to be 30 seconds, and again let it train for a while.
 
-*********imag*****************
+![returns](https://user-images.githubusercontent.com/45502113/111943617-fda15880-8a92-11eb-864b-c7a7b5081e5d.png)
+
 
 We changed the rewards since this test, so the scale of scores varied a little from the previous graph. But you can still tell that the amount of improvement overtime is not ideal. 
 
 Then we decided to stop respawning ghasts, and end the episode as soon as the player killed the target. This is because we realized the behavior of the ghast is not related to the previous one, meaning that the agent doesn’t need to plan beyond one ghast. We also keeped the maximum length of each episode to be 30 seconds, and let it run for a bit longer.
 
 
-*********imag*****************
+![returns](https://user-images.githubusercontent.com/45502113/111943637-098d1a80-8a93-11eb-8ab0-4ed57974a86c.png)
+
 
 Since this time the length of each episode is not always the same, we update the returns list based on the number of steps: the graph above is the total score the agent got in each 300 steps. 
 
@@ -56,7 +59,7 @@ Now, you can see that the improvement overtime is a bit more obvious, but the cu
 
 After discussing our concern with the professor, we realized that we can try to make the length of each episode even shorter, because the ghast always shoots fireballs with the constant rate and speed, meaning that the motion of each fireball is independent from others, so the agent shouldn’t need to plan too much in advance of each fireball. This time, we decreased the maximum duration of each episode to 10 seconds (which is about 2 or 3 fireballs in each episode), keeped other settings unchanged, and let it run for a while.
 
-*********imag*****************
+![b40265fe8c52b929f8f53f3e99bfc6c](https://user-images.githubusercontent.com/45502113/111942833-6c7db200-8a91-11eb-9cdc-c4fd96dfefc7.png)
 
 This time, the learning outcome improved significantly. After around 80,000 steps, the agent is able to hit back most of the fireballs, and kill the target within the 10-second period. The agent was not only gaining more points (500 points vs. 150 points at step 60,000), but also picking up the pattern of the game much faster: the score reached the maximum after 60,000 steps.
 
