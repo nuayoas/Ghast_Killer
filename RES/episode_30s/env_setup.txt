@@ -1,0 +1,9 @@
+episode length: 	30s (fixed)
+respawn ghasts: 	yes
+returns:		append each episode
+evaluations:	append each 100 steps
+rewards:
+	dodge:	0
+	hitback:	1
+	kill:	5
+	gethit:	-5

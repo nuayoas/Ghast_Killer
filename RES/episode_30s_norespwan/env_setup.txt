@@ -1,0 +1,9 @@
+episode length: 	30s （ends when the ghast is killed)
+respawn ghasts: 	no
+returns:		append each 300 steps
+evaluations:	append each 300 steps
+rewards:
+	dodge:	0
+	hitback:	5
+	kill:	10
+	gethit:	-5
