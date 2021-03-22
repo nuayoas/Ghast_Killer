@@ -6,7 +6,7 @@ title:  Home
 
 ### ***Initial Proposal:***  [Proposal](proposal.html)
   
-### ***Latest Update:*** [Status](status.html)
+### ***Latest Update:*** [Final Report](final.html)
   
 ### ***Team Info:*** [Team](team.html)
 
