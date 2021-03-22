@@ -10,6 +10,6 @@ title:  Home
   
 ### ***Team Info:*** [Team](team.html)
 
-***Source code***: <a herf = "https://github.com/nuayoas/Ghast_Killer">https://github.com/nuayoas/Ghast_Killer </a>
+***Source code***: [Github Repo](https://github.com/nuayoas/Ghast_Killer)
 
 
