@@ -23,7 +23,7 @@ body {
 /* Not required for template or sticky footer method. */
 
 body {
-  line-height: 2;
+  line-height: 2 !important;
 }
 
 body > .container {
