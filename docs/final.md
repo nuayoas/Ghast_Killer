@@ -3,6 +3,8 @@ layout: default
 title:  Home
 ---
 
+[Our Final Model](https://github.com/nuayoas/Ghast_Killer/tree/main/RES/episdode_10s_norespwan)
+
 ## Project Summary
 
 The ghast is a minecraft monster who usually spawns in the hell. When a player is inside its shooting range, the ghast will constantly shoot explosive fireballs to the player every 3 seconds. A fireball will create a small but temporary igniting zone when it explodes. The fireball, however, can be bounced back if the player hits it right in front of his face with a sword. If the player hits the fireball at the right angle, he can kill the ghast with the redirected fireball.
