@@ -7,10 +7,8 @@ title:  Team
 
 
 ## Yuhui Chen
-***UCI Net ID***: yuhuic6
 
 ## Daolun Shen
-***UCI Net ID***: daoluns
 
 ### General Meeting Time:
 Monday 5:00pm - 5:30pm. 
